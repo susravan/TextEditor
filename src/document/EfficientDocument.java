@@ -11,10 +11,11 @@ import java.util.List;
  */
 public class EfficientDocument extends Document {
 
-	private int numWords;  // The number of words in the document
-	private int numSentences;  // The number of sentences in the document
-	private int numSyllables;  // The number of syllables in the document
+	private int numWords;  		// The number of words in the document
+	private int numSentences;  	// The number of sentences in the document
+	private int numSyllables;  	// The number of syllables in the document
 	
+	// Calling the constructor, populates the variables
 	public EfficientDocument(String text)
 	{
 		super(text);
@@ -125,7 +126,6 @@ public class EfficientDocument extends Document {
 	}
 	
 	// Can be used for testing
-	// We encourage you to add your own tests here.
 	public static void main(String[] args)
 	{
 	    testCase(new EfficientDocument("This is a test.  How many???  "
