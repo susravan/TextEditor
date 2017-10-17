@@ -33,8 +33,6 @@ public class EfficientDocument extends Document {
 	 */
 	private boolean isWord(String tok)
 	{
-	    // Note: This is a fast way of checking whether a string is a word
-	    // You probably don't want to change it.
 		return !(tok.indexOf("!") >=0 || tok.indexOf(".") >=0 || tok.indexOf("?")>=0);
 	}
 	
@@ -45,15 +43,25 @@ public class EfficientDocument extends Document {
      */
 	private void processText()
 	{
-		// Call getTokens on the text to preserve separate strings that are 
-		// either words or sentence-ending punctuation.  Ignore everything
-		// That is not a word or a sentence-ending puctuation.
-		// MAKE SURE YOU UNDERSTAND THIS LINE BEFORE YOU CODE THE REST
-		// OF THIS METHOD.
+		// Get all words and word that end the sentences then classify 
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
+		int tokenIndex = 0;
 		
-		// TODO: Finish this method.  Remember the countSyllables method from 
-		// Document.  That will come in handy here.  isWord defined above will also help.
+		for(String token: tokens) {
+			tokenIndex++;
+			numSyllables += countSyllables(token);
+			if(isWord(token)) {
+				numWords++;
+				
+				// If last word doesn't contain end of sentence character
+				if(tokenIndex == tokens.size()) {
+					numSentences++;
+				}
+			}
+			else {
+				numSentences++;
+			}
+		}
 	}
 
 	
@@ -72,8 +80,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumSentences() {
-		//TODO: write this method.  Hint: It's simple
-		return 0;
+		return this.numSentences;
 	}
 
 	
@@ -93,8 +100,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumWords() {
-		//TODO: write this method.  Hint: It's simple
-	    return 0;
+		return this.numWords;
 	}
 
 
@@ -115,8 +121,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumSyllables() {
-        //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing
@@ -139,8 +144,6 @@ public class EfficientDocument extends Document {
 		testCase(new EfficientDocument("Sentences?!"), 3, 1, 1);
 		testCase(new EfficientDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
-		
 	}
 	
-
 }

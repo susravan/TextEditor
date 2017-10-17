@@ -84,7 +84,6 @@ public abstract class Document {
 			else if(vowels.indexOf(charArr[i]) == -1) {
 				newSyllable = true;
 			}
-			
 		}
 	    return syllableCount;
 	}
