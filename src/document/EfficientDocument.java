@@ -104,7 +104,6 @@ public class EfficientDocument extends Document {
 		return this.numWords;
 	}
 
-
 	/**
 	 * Get the total number of syllables in the document (the stored text). 
 	 * To calculate the the number of syllables in a word, it uses the following rules:
