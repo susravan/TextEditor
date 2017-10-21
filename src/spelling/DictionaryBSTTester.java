@@ -40,7 +40,6 @@ public class DictionaryBSTTester {
 		
 		DictionaryLoader.loadDictionary(largeDict, dictFile);
 	}
-
 	
 	/** Test if the size method is working correctly.
 	 */
@@ -75,15 +74,12 @@ public class DictionaryBSTTester {
 		
 		assertEquals("Testing isWord on small: subsequent", true, smallDict.isWord("subsequent"));
 		assertEquals("Testing isWord on large: subsequent", true, largeDict.isWord("subsequent"));
-		
-		
 	}
 	
 	/** Test the addWord method */
 	@Test
 	public void addWord()
 	{
-		
 		
 		assertEquals("Asserting hellow is not in empty dict", false, emptyDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in small dict", false, smallDict.isWord("hellow"));
@@ -119,11 +115,6 @@ public class DictionaryBSTTester {
 		assertEquals("Testing isWord on large: no", true, largeDict.isWord("no"));
 		
 		assertEquals("Testing isWord on small: subsequent", true, smallDict.isWord("subsequent"));
-		assertEquals("Testing isWord on large: subsequent", true, largeDict.isWord("subsequent"));
 		
-		
-	}	
-	
-	
-	
+	}		
 }
