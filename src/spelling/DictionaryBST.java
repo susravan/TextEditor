@@ -4,6 +4,7 @@ import java.util.TreeSet;
 
 /**
  * @author UC San Diego Intermediate MOOC team
+ * A class that implements the Dictionary interface using a BST
  *
  */
 public class DictionaryBST implements Dictionary {

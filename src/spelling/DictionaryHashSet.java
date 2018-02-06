@@ -13,7 +13,6 @@ import java.util.Scanner;
  */
 public class DictionaryHashSet implements Dictionary 
 {
-
     private HashSet<String> words;
 	
 	public DictionaryHashSet()
@@ -43,6 +42,4 @@ public class DictionaryHashSet implements Dictionary
 	public boolean isWord(String s) {
     	return words.contains(s.toLowerCase());
 	}
-	
-   
 }

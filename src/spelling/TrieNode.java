@@ -61,7 +61,7 @@ class TrieNode {
 	/** Return the text string at this node */
     public String getText()
 	{
-		return text;
+		return this.text;
 	}
 	
     /** Set whether or not this node ends a word in the trie. */
@@ -71,7 +71,7 @@ class TrieNode {
 	}
 	
 	/** Return whether or not this node ends a word in the trie. */
-	public boolean endsWord()
+	public boolean isWord()
 	{
 		return isWord;
 	}
