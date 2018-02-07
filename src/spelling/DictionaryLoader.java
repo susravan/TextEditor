@@ -19,6 +19,7 @@ public class DictionaryLoader {
             String nextWord;
             reader = new BufferedReader(new FileReader(filename));
             while ((nextWord = reader.readLine()) != null) {
+//            	System.out.println("Current word = " + nextWord);
                 d.addWord(nextWord);
             }
         } catch (IOException e) {
