@@ -1,4 +1,4 @@
-##### Disclaimer:
+#### Disclaimer:
 The basic starter code is taken from Coursera website - https://www.coursera.org/learn/data-structures-optimizing-performance
 and implemented the features of it.
 
@@ -30,6 +30,7 @@ I have used regex to calculate the components of the formula.
 Given a list of words, we can store those words in a dictionary in several ways ranging from a simple linked list to a complex data structures such as tries.
 Following is the analysis when the dictionary is implemented using both linked list and binary search tree. The operations are to look for a word for no. of trials times, once the dictionary is loaded.
 Time unit - 10^-6 sec
+
 No. of trials | Linked list dictionary access time | BST dictionary access time
 ---------------- | --------------------- | --------------
 5000 | 44800 | 382
