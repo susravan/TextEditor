@@ -3,9 +3,7 @@ package spelling;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * An trie data structure that implements the Dictionary and the AutoComplete
@@ -14,12 +12,12 @@ import java.util.Queue;
  * @author You
  *
  */
-public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
-	private TrieNode root;
+public class AutoCompleteDictionaryTrie2 implements Dictionary, AutoComplete {
+	private OptimizedTrieNode root;
 	private int size;
 
-	public AutoCompleteDictionaryTrie() {
-		root = new TrieNode();
+	public AutoCompleteDictionaryTrie2() {
+		root = new OptimizedTrieNode();
 		this.size = 0;
 	}
 
@@ -38,16 +36,16 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
 	 */
 	public boolean addWord(String word) {
 		word = word.toLowerCase();
-		TrieNode pointer = root;
+		OptimizedTrieNode pointer = root;
 		for (int i = 0; i < word.length(); i++) {
 			char ch = word.charAt(i);
 			pointer.insert(ch);
 			pointer = pointer.getChild(ch);
 		}
-		// If word already existing, return false
 		if (pointer.isWord())
 			return false;
-		pointer.setEndsWord(true);
+
+		pointer.setIsWord();
 		this.size++;
 		return true;
 	}
@@ -67,12 +65,13 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) {
 		s = s.toLowerCase();
-		TrieNode pointer = root;
 		char[] chrArr = s.toCharArray();
+		OptimizedTrieNode pointer = root;
 		for (int i = 0; i < chrArr.length; i++) {
-			if (pointer.getChild(chrArr[i]) == null)
+			if (pointer.hasChild(chrArr[i]))
+				pointer = pointer.getChild(chrArr[i]);
+			else
 				return false;
-			pointer = pointer.getChild(chrArr[i]);
 		}
 		return pointer.isWord();
 	}
@@ -118,65 +117,40 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
 		// Add all of its child nodes to the back of the queue
 		// Return the list of completions
 
-		int predCount = 0;
 		prefix = prefix.toLowerCase();
 		List<String> predictions = new ArrayList<>();
-		StringBuilder sb = new StringBuilder();
-		TrieNode pointer = root;
-
-		// Traversing through the prefix
+		// Finding stem in the tree
 		char[] chrArr = prefix.toCharArray();
+		StringBuilder sb = new StringBuilder();
+
 		for (int i = 0; i < chrArr.length; i++) {
 			char ch = chrArr[i];
-			if (pointer.getChild(ch) != null) {
+			if (root.hasChild(ch)) {
 				sb.append(ch);
-				pointer = pointer.getChild(ch);
+				root = root.getChild(ch);
 			} else {
 				return predictions; // Return empty list if prefix is not present
 			}
 		}
 
-		Queue<TrieNode> possiblePred = new LinkedList<>();
-		possiblePred.offer(pointer);
-
-		while (predCount < numCompletions && !possiblePred.isEmpty()) {
-			TrieNode curr = possiblePred.poll();
-			if (curr.isWord()) {
-				predictions.add(curr.getText());
-				predCount++;
-			}
-			List<Character> validChars = new ArrayList<>(curr.getValidNextCharacters());
-			for (int i = 0; i < validChars.size() && predCount < numCompletions; i++) {
-				char ch = validChars.get(i);
-				possiblePred.offer(curr.getChild(ch));
-
-				// if(possiblePred.peek().isWord()) {
-				// System.out.println("Latest possiblePred = " + possiblePred.peek().getText());
-				// predictions.add(possiblePred.peek().getText());
-				// predCount++;
-				// }
-			}
-		}
-		System.out.println(predictions);
+		predictCompletionsHelper(root, predictions, sb, numCompletions);
 		return predictions;
 	}
 
-	// For debugging
-	public void printTree() {
-		printNode(root);
-	}
-
-	/** Do a pre-order traversal from this node down */
-	public void printNode(TrieNode curr) {
-		if (curr == null)
+	private void predictCompletionsHelper(OptimizedTrieNode node, List<String> predictions, StringBuilder sb,
+			int numCompletions) {
+		if (predictions.size() >= numCompletions)
 			return;
 
-		System.out.println(curr.getText());
+		if (node.isWord())
+			predictions.add(sb.toString());
 
-		TrieNode next = null;
-		for (Character c : curr.getValidNextCharacters()) {
-			next = curr.getChild(c);
-			printNode(next);
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			if (node.getChild(ch) != null) {
+				sb.append(ch);
+				predictCompletionsHelper(node.getChild(ch), predictions, sb, numCompletions);
+				sb.deleteCharAt(sb.length() - 1);
+			}
 		}
 	}
 
@@ -211,8 +185,17 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
 
 			assertEquals("Testing isWord on small: no", false, smallDict.isWord("no"));
 			assertEquals("Testing isWord on small: subsequent", true, smallDict.isWord("subsequent"));
+
 		}
 		long endTime = System.nanoTime();
 		System.out.println("Time taken = " + (endTime - startTime) / 1000000 + " ms");
+		// System.out.println(at.isWord("add"));
+		// at.addWord("add");
+		// System.out.println(at.isWord(""));
+		// at.addWord("ads");
+		// at.addWord("bad");
+		// at.addWord("bat");
+		// at.addWord("sravan");
+		// at.predictCompletions("s", 3);
 	}
 }
